@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+	<title>通用 LPC 精灵图角色生成器</title>
+  <script type="module" crossorigin src="./assets/main-DhDJlai-.js"></script>
+  <link rel="modulepreload" crossorigin href="./assets/rolldown-runtime-Dd_uD5pT.js">
+  <link rel="modulepreload" crossorigin href="./assets/vendor-D5qM2qLl.js">
+  <link rel="stylesheet" crossorigin href="./assets/main-DCe1eSNr.css">
+<link rel="modulepreload" crossorigin href="./assets/index-metadata-BJQSKkXN.js">
+  <link rel="modulepreload" crossorigin href="./assets/item-metadata-Cgz_Jwk7.js">
+  <link rel="modulepreload" crossorigin href="./assets/layers-metadata-D1dR8BFd.js">
+</head>
+<body>
+	<section id="header-left" class="sticky">
+		<div class="is-flex is-align-items-center is-flex-wrap-wrap" style="gap: 1rem;">
+			<h1 class="title is-4 mb-0">
+				通用 LPC 精灵图生成器
+			</h1>
+		</div>
+	</section>
+
+	<div class="header-buttons">
+		<button id="theme-toggle" class="theme-toggle-btn" title="切换主题" aria-label="切换主题">
+			<svg class="theme-toggle-icon theme-toggle-icon--sun" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+			<svg class="theme-toggle-icon theme-toggle-icon--moon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M21 12.79A9 9 0 1111.21 3a7 7 0 009.79 9.79z"/></svg>
+			<span class="theme-toggle-knob"></span>
+		</button>
+		<button id="info-btn" class="info-btn" title="制作人员名单" aria-label="制作人员名单">i</button>
+	</div>
+
+	<div id="credits-modal" class="modal-overlay" style="display:none;">
+		<div class="modal-box">
+			<button class="modal-close" id="credits-modal-close">&times;</button>
+			<div id="credits-modal-content"></div>
+		</div>
+	</div>
+
+	<div id="columns-container" class="columns is-desktop">
+		<div id="chooser-column" class="column">
+			<div id="mithril-filters" class="loading"></div>
+		</div>
+
+		<div id="resize-handle" class="resize-handle"></div>
+
+		<div id="preview-column" class="column">
+			<div id="mithril-preview" class="loading"></div>
+			<div id="mithril-spritesheet-preview" class="loading"></div>
+		</div>
+	</div>
+	<script>
+(function() {
+  var handle = document.getElementById('resize-handle');
+  var chooser = document.getElementById('chooser-column');
+  var preview = document.getElementById('preview-column');
+  if (!handle || !chooser || !preview) return;
+
+  var container = document.getElementById('columns-container');
+  var isDragging = false;
+  var startX = 0;
+  var startChooserWidth = 0;
+
+  handle.addEventListener('mousedown', function(e) {
+    isDragging = true;
+    startX = e.clientX;
+    startChooserWidth = chooser.getBoundingClientRect().width;
+    document.body.style.cursor = 'col-resize';
+    document.body.style.userSelect = 'none';
+    // Remove auto columns: set explicit widths
+    chooser.style.flex = 'none';
+    preview.style.flex = 'none';
+    chooser.style.width = startChooserWidth + 'px';
+    preview.style.width = (container.getBoundingClientRect().width - startChooserWidth) + 'px';
+    e.preventDefault();
+  });
+
+  document.addEventListener('mousemove', function(e) {
+    if (!isDragging) return;
+    var containerWidth = container.getBoundingClientRect().width;
+    var dx = e.clientX - startX;
+    var newChooserWidth = startChooserWidth + dx;
+    var minW = 280;
+    var maxW = containerWidth - 300;
+    newChooserWidth = Math.max(minW, Math.min(maxW, newChooserWidth));
+    chooser.style.width = newChooserWidth + 'px';
+    preview.style.width = (containerWidth - newChooserWidth) + 'px';
+  });
+
+  document.addEventListener('mouseup', function() {
+    if (!isDragging) return;
+    isDragging = false;
+    document.body.style.cursor = '';
+    document.body.style.userSelect = '';
+  });
+})();
+	</script>
+	<script>
+document.getElementById('theme-toggle')?.addEventListener('click', function() {
+  var html = document.documentElement;
+  var current = html.getAttribute('data-theme');
+  html.setAttribute('data-theme', current === 'dark' ? 'light' : 'dark');
+});
+var infoBtn = document.getElementById('info-btn');
+var creditsModal = document.getElementById('credits-modal');
+var creditsModalClose = document.getElementById('credits-modal-close');
+function openCreditsModal() {
+  creditsModal.style.display = 'flex';
+}
+function closeCreditsModal() {
+  creditsModal.style.display = 'none';
+}
+infoBtn?.addEventListener('click', openCreditsModal);
+creditsModalClose?.addEventListener('click', closeCreditsModal);
+creditsModal?.addEventListener('click', function(e) { if (e.target === creditsModal) closeCreditsModal(); });
+</script>
+</body>
+</html>
