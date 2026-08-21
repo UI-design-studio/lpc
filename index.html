@@ -16,7 +16,7 @@
 
 	<div class="header-buttons">
 		<button id="theme-toggle" class="theme-toggle-btn" title="切换主题" aria-label="切换主题">
-			<svg class="theme-toggle-icon theme-toggle-icon--sun" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+			<svg class="theme-toggle-icon theme-toggle-icon--sun" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v6m0 6v6M4.22 4.22l4.24 4.24m5.08 5.08l4.24 4.24M1 12h6m6 0h6M4.22 19.78l4.24-4.24m5.08-5.08l4.24-4.24"/></svg>
 			<svg class="theme-toggle-icon theme-toggle-icon--moon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M21 12.79A9 9 0 1111.21 3a7 7 0 009.79 9.79z"/></svg>
 			<span class="theme-toggle-knob"></span>
 		</button>
@@ -107,6 +107,6 @@ infoBtn?.addEventListener('click', openCreditsModal);
 creditsModalClose?.addEventListener('click', closeCreditsModal);
 creditsModal?.addEventListener('click', function(e) { if (e.target === creditsModal) closeCreditsModal(); });
 </script>
-	<script type="module" src="sources/main.ts"></script>
+	<script type="module" src="./dist/assets/main.js"></script>
 </body>
 </html>
