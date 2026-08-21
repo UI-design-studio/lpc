@@ -23,6 +23,10 @@ import {
 import { debugLog } from "../../utils/debug.ts";
 import type { CatalogReader } from "../../state/catalog.ts";
 import { t } from "../../i18n/index.ts";
+import {
+  getHashParamsforSelections,
+  createHashStringFromParams,
+} from "../../state/hash.ts";
 
 const zipExportTitle = t("download.zip_loading");
 
@@ -68,6 +72,28 @@ export const Download: m.Component<{ catalog: CatalogReader }> = {
     const saveAsPNG = () => {
       if (!window.canvasRenderer) return;
       downloadAsPNG("character-spritesheet.png", state.exportScale);
+    };
+
+    const copyShareLink = async (): Promise<void> => {
+      // Build URL from current selections
+      try {
+        const params = getHashParamsforSelections(
+          vnode.attrs.catalog,
+          state.selections,
+        );
+        const hash = createHashStringFromParams(params);
+        const url = `${window.location.origin}${window.location.pathname}#${hash}`;
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          await navigator.clipboard.writeText(url);
+          alert("链接已复制到剪贴板：\n" + url);
+        } else {
+          // Fallback prompt
+          window.prompt("复制下面的链接（Ctrl+C / Cmd+C）：", url);
+        }
+      } catch (err) {
+        console.error("Failed to build/copy share link:", err);
+        alert("无法生成分享链接");
+      }
     };
 
     return m(
@@ -164,6 +190,12 @@ export const Download: m.Component<{ catalog: CatalogReader }> = {
             "button.button.is-small.is-link",
             { onclick: importFromClipboard },
             t("download.import_json"),
+          ),
+          // New: copy shareable URL to clipboard
+          m(
+            "button.button.is-small.is-link",
+            { onclick: copyShareLink },
+            "复制分享链接",
           ),
         ]),
       ],
